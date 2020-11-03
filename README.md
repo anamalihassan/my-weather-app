@@ -1,2 +1,3 @@
 # my-weather-app
 MVVM Swift(5.3) app which fetches weather information for user's current location.
+App is build on Xcode 12.1 which may not support on versions lower than 12 
