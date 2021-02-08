@@ -8,7 +8,7 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AlertDisplayer {
     
     // MARK: - Properties
     
@@ -132,6 +132,7 @@ class ViewController: UIViewController {
                 self?.dailyWeatherTV.reloadData()
             }
         }
+        
         viewModel.reloadHourlyCollectionView = { [weak self] () in
             DispatchQueue.main.async {
                 self?.hourlyWeatherCV.reloadData()
@@ -162,7 +163,11 @@ class ViewController: UIViewController {
         
         viewModel.showAlert = {
             if let error = self.viewModel.error {
-                print(error.localizedDescription)
+                let title = "Warning"
+                let action = UIAlertAction(title: "OK", style: .default)
+                DispatchQueue.main.async {
+                    self.displayAlert(with: title , message: error, actions: [action])
+                }
             }
         }
         
@@ -171,22 +176,24 @@ class ViewController: UIViewController {
                 self.viewModel.configureWeatherView(self.weatherInfoView)
             }
         }
+        viewModel.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
     }
     
     private func activityIndicatorStart() {
         DispatchQueue.main.async {
-            self.activityIndView.startAnimating()
+            LLSpinner.spin()
         }
     }
     
     private func activityIndicatorStop() {
         DispatchQueue.main.async {
-            self.activityIndView.stopAnimating()
+            LLSpinner.stop()
         }
     }
     
     
 }
+
 
 // MARK: - Location Manager
 

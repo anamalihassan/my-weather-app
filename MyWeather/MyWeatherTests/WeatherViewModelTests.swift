@@ -43,7 +43,6 @@ class WeatherViewModelTests: XCTestCase {
         }
         
         sut.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
-        mockWeatherService.fetchSuccess()
         
         // dailyWeatherCount is equal to the number of daily data
         XCTAssertEqual( sut.dailyWeatherCount, stubWeather.daily?.data?.count )
@@ -63,7 +62,6 @@ class WeatherViewModelTests: XCTestCase {
         }
         
         sut.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
-        mockWeatherService.fetchSuccess()
         
         // dailyWeatherCount is equal to the number of daily data
         XCTAssertEqual( sut.hourlyWeatherCount, stubWeather.hourly?.data?.count )
@@ -80,29 +78,27 @@ extension WeatherViewModelTests {
     private func goToFetchPhotoFinished() {
         mockWeatherService.weatherResult = StubGenerator().stubWeatherInfo()
         sut.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
-        mockWeatherService.fetchSuccess()
+        
     }
 }
 
 class MockWeatherService: WeatherService {
-    func fetchWeatherInformation(latitude: Double, longitude: Double, completion: @escaping (WeatherResult?, Error?) -> ()) {
+    init() {
+        super.init(weather: WeatherEndPoint.forecast.rawValue)
+    }
+    override func fetchWeatherInformation(latitude: Double, longitude: Double) {
         isFetchWeatherInfoCalled = true
-        completeClosure = completion
+        weatherResult = StubGenerator().stubWeatherInfo()
+        if let response = weatherResult{
+            self.delegate?.onWeatherFetchCompleted(with: response)
+            
+        }
     }
     
     
     var isFetchWeatherInfoCalled = false
     
     var weatherResult: WeatherResult?
-    var completeClosure: ((WeatherResult?, Error?) -> ())!
-    
-    func fetchSuccess() {
-        completeClosure( weatherResult, nil )
-    }
-    
-    func fetchFail(error: Error?) {
-        completeClosure( weatherResult, error )
-    }
     
 }
 

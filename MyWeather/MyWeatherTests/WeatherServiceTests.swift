@@ -8,14 +8,13 @@
 import XCTest
 @testable import MyWeather
 
-class WeatherServiceTests: XCTestCase {
+class WeatherServiceTests: XCTestCase, WeatherServiceDelegate {
     
     var weatherService: WeatherService?
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the classWeatherService
         super.setUp()
-        weatherService = WeatherServiceImpl()
     }
 
     override func tearDownWithError() throws {
@@ -23,21 +22,51 @@ class WeatherServiceTests: XCTestCase {
         weatherService = nil
         super.tearDown()
     }
-
-    func test_fetch_weather_information() {
+    
+    private var onWeatherFetchCompletedExpectation: XCTestExpectation!
+    private var onFetchFailedExpectation: XCTestExpectation!
+    private var weatherResult: WeatherResult!
+    private var errorReason: String!
+    
+    func test_fetch_weather_information_success() {
 
         // Given A apiservice
-        let weatherService = self.weatherService!
+        weatherService = WeatherService(weather: WeatherEndPoint.forecast.rawValue)
+        weatherService?.delegate = self
 
-        // When fetch popular photo
-        let expect = XCTestExpectation(description: "callback")
+        // When fetch weath info
+        onWeatherFetchCompletedExpectation = expectation(description: "onWeatherFetchCompleted")
+        weatherService!.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
+        
+        waitForExpectations(timeout: 100)
+        XCTAssertNotNil(self.weatherResult)
+        XCTAssertNil(self.errorReason)
+    }
+    
+    func test_fetch_weather_information_failure() {
 
-        weatherService.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381, completion: { (weatherResult, error) in
-            expect.fulfill()
-            XCTAssertNotNil(weatherResult)
-        })
+        // Given A apiservice
+        weatherService = WeatherService(weather: "invalidURL")
+        weatherService?.delegate = self
 
-        wait(for: [expect], timeout: 3.1)
+        // When fetch weath info
+        onFetchFailedExpectation = expectation(description: "onFetchFailed")
+        weatherService!.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
+        
+        waitForExpectations(timeout: 100)
+        XCTAssertNil(self.weatherResult)
+        XCTAssertNotNil(self.errorReason)
+    }
+    
+    func onWeatherFetchCompleted(with weatherResult: WeatherResult) {
+        self.weatherResult = weatherResult
+        onWeatherFetchCompletedExpectation.fulfill()
+    }
+    
+    
+    func onFetchFailed(with reason: String) {
+        self.errorReason = reason
+        onFetchFailedExpectation.fulfill()
     }
 
 }

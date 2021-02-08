@@ -17,7 +17,7 @@ class WeatherViewModel {
             self.didFinishFetch?()
         }
     }
-    var error: Error? {
+    var error: String? {
         didSet { self.showAlert?() }
     }
     var isLoading: Bool = false {
@@ -53,8 +53,12 @@ class WeatherViewModel {
     var reloadHourlyCollectionView: (()->())?
     
     // MARK: - Constructor
-    init( weatherService: WeatherService = WeatherServiceImpl()) {
-        self.weatherService = weatherService
+    init( weatherService: WeatherService = WeatherService(weather: WeatherEndPoint.forecast.rawValue)) {
+            self.weatherService = weatherService
+        self.setUpService()
+    }
+    func setUpService() {
+        self.weatherService.delegate = self
     }
     
     // MARK: - Network call
@@ -63,16 +67,7 @@ class WeatherViewModel {
             return
         }
         self.isLoading = true
-        self.weatherService.fetchWeatherInformation(latitude: latitude, longitude: longitude, completion: { (weatherResult, error) in
-            if let error = error {
-                self.error = error
-                self.isLoading = false
-                return
-            }
-            self.error = nil
-            self.isLoading = false
-            self.weatherResult = weatherResult
-        })
+        self.weatherService.fetchWeatherInformation(latitude: latitude, longitude: longitude)
     }
     
     // MARK: - UI
@@ -84,6 +79,21 @@ class WeatherViewModel {
             self.hourlyWeather = hourlyWeather
         }
     }
+}
+extension WeatherViewModel: WeatherServiceDelegate {
+    
+    func onWeatherFetchCompleted(with weatherResult: WeatherResult) {
+        self.isLoading = false
+        self.weatherResult = weatherResult
+    }
+    
+    
+    func onFetchFailed(with reason: String) {
+        self.isLoading = false
+        self.error = reason
+    }
+    
+    
 }
 
 extension WeatherViewModel {
