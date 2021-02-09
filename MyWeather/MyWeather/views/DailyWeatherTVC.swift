@@ -68,6 +68,15 @@ class DailyWeatherTVC: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        
+        super.init(coder: aDecoder)
+    }
+    
+    func setUpView(){
         let tempSV = UIStackView()
         tempSV.translatesAutoresizingMaskIntoConstraints = false
         tempSV.axis = .horizontal
@@ -90,12 +99,6 @@ class DailyWeatherTVC: UITableViewCell {
             tempSV.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-20),
             tempSV.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor),
         ])
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        
-        super.init(coder: aDecoder)
     }
 
 }

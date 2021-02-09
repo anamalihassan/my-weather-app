@@ -44,7 +44,8 @@ class WeatherViewModel {
         return dailyWeather.count
     }
     
-    let weatherService: WeatherService
+    private let weatherService: WeatherService
+    private let locationService: LocationService
     
     var showAlert: (() -> ())?
     var updateLoadingStatus: (() -> ())?
@@ -53,16 +54,43 @@ class WeatherViewModel {
     var reloadHourlyCollectionView: (()->())?
     
     // MARK: - Constructor
-    init( weatherService: WeatherService = WeatherService(weather: WeatherEndPoint.forecast.rawValue)) {
-            self.weatherService = weatherService
+    init( weatherService: WeatherService = WeatherService(weather: WeatherEndPoint.forecast.rawValue), locationService: LocationService = LocationManager()) {
+        self.weatherService = weatherService
+        self.locationService = locationService
         self.setUpService()
+        self.fetchLocation()
     }
-    func setUpService() {
+    private func setUpService() {
         self.weatherService.delegate = self
     }
     
+    // MARK: -  Fetch Location
+    
+    private func fetchLocation() {
+        locationService.fetchLocation { [weak self] (location, error) in
+            if let error = error {
+                print("Unable to Fetch Location (\(error))")
+                self?.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
+                // Invoke Completion Handler
+//                self?.didFetchWeatherData?(nil, .notAuthorizedToRequestLocation)
+                
+            } else if let location = location {
+//                 Invoke Completion Handler
+                print("location fetched")
+                self?.fetchWeatherInformation(latitude: location.latitude, longitude: location.longitude)
+                
+            } else {
+                print("Unable to Fetch Location")
+                self?.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
+                
+                // Invoke Completion Handler
+//                self?.didFetchWeatherData?(nil, .failedToRequestLocation)
+            }
+        }
+    }
+    
     // MARK: - Network call
-    func fetchWeatherInformation(latitude: Double, longitude: Double) {
+    private func fetchWeatherInformation(latitude: Double, longitude: Double) {
         if self.isLoading {
             return
         }

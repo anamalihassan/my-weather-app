@@ -6,13 +6,10 @@
 //
 
 import UIKit
-import CoreLocation
 
 class ViewController: UIViewController, AlertDisplayer {
     
     // MARK: - Properties
-    
-    let locationManager = CLLocationManager()
     
     let viewModel = WeatherViewModel()
     
@@ -52,7 +49,7 @@ class ViewController: UIViewController, AlertDisplayer {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setUpLocation()
+//        setUpLocation()
         setUpView()
         setUpViewModel()
         self.view.addSubview(activityIndView)
@@ -63,29 +60,6 @@ class ViewController: UIViewController, AlertDisplayer {
         separator.backgroundColor = appPrimaryColor
         separator.translatesAutoresizingMaskIntoConstraints = false
         return separator
-    }
-    
-    func setUpLocation(){
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            switch self.locationManager.authorizationStatus {
-            case .notDetermined, .denied, .restricted:
-                fetchDefaultLocationWeatherUpdates()
-            case .authorizedAlways, .authorizedWhenInUse:
-                locationManager.delegate = self
-                locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-                locationManager.startUpdatingLocation()
-            @unknown default:
-                fetchDefaultLocationWeatherUpdates()
-            }
-        }else {
-            fetchDefaultLocationWeatherUpdates()
-        }
-    }
-    
-    func fetchDefaultLocationWeatherUpdates(){
-        viewModel.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
     }
     
     func setUpView(){
@@ -176,7 +150,6 @@ class ViewController: UIViewController, AlertDisplayer {
                 self.viewModel.configureWeatherView(self.weatherInfoView)
             }
         }
-        viewModel.fetchWeatherInformation(latitude: 59.337239, longitude: 18.062381)
     }
     
     private func activityIndicatorStart() {
@@ -192,16 +165,6 @@ class ViewController: UIViewController, AlertDisplayer {
     }
     
     
-}
-
-
-// MARK: - Location Manager
-
-extension ViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        viewModel.fetchWeatherInformation(latitude: locValue.latitude, longitude: locValue.longitude)
-    }
 }
 
 

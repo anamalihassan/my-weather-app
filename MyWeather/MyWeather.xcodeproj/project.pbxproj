@@ -12,6 +12,9 @@
 		6F4146FC25D1179D006763CE /* AuthTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4146FB25D1179D006763CE /* AuthTokenProvider.swift */; };
 		6F41470125D132C9006763CE /* LLSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41470025D132C9006763CE /* LLSpinner.swift */; };
 		6F41470625D132EA006763CE /* AlertDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41470525D132EA006763CE /* AlertDisplayer.swift */; };
+		6F41471525D28E66006763CE /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41471425D28E66006763CE /* Location.swift */; };
+		6F41471D25D28EAA006763CE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41471C25D28EAA006763CE /* LocationManager.swift */; };
+		6F41473025D2997A006763CE /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41472F25D2997A006763CE /* LocationService.swift */; };
 		6F4BFB4C2551A5D700CC56AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4BFB4B2551A5D700CC56AF /* AppDelegate.swift */; };
 		6F4BFB4E2551A5D700CC56AF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4BFB4D2551A5D700CC56AF /* SceneDelegate.swift */; };
 		6F4BFB502551A5D700CC56AF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4BFB4F2551A5D700CC56AF /* ViewController.swift */; };
@@ -56,6 +59,9 @@
 		6F4146FB25D1179D006763CE /* AuthTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTokenProvider.swift; sourceTree = "<group>"; };
 		6F41470025D132C9006763CE /* LLSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLSpinner.swift; sourceTree = "<group>"; };
 		6F41470525D132EA006763CE /* AlertDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDisplayer.swift; sourceTree = "<group>"; };
+		6F41471425D28E66006763CE /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		6F41471C25D28EAA006763CE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		6F41472F25D2997A006763CE /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		6F4BFB482551A5D700CC56AF /* MyWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F4BFB4B2551A5D700CC56AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6F4BFB4D2551A5D700CC56AF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +129,16 @@
 				6F41470525D132EA006763CE /* AlertDisplayer.swift */,
 			);
 			path = Library;
+			sourceTree = "<group>";
+		};
+		6F41471325D28DCF006763CE /* location */ = {
+			isa = PBXGroup;
+			children = (
+				6F41471425D28E66006763CE /* Location.swift */,
+				6F41471C25D28EAA006763CE /* LocationManager.swift */,
+				6F41472F25D2997A006763CE /* LocationService.swift */,
+			);
+			path = location;
 			sourceTree = "<group>";
 		};
 		6F4BFB3F2551A5D700CC56AF = {
@@ -213,6 +229,7 @@
 		6F4BFB812551A61900CC56AF /* service */ = {
 			isa = PBXGroup;
 			children = (
+				6F41471325D28DCF006763CE /* location */,
 				6F4146ED25D10D9E006763CE /* Network */,
 				6F4BFB912551A67A00CC56AF /* WeatherService.swift */,
 			);
@@ -381,8 +398,11 @@
 			files = (
 				6F4BFBA52551A6D400CC56AF /* DailyWeatherTVC.swift in Sources */,
 				6F4146F725D11729006763CE /* AppURLs.swift in Sources */,
+				6F41471D25D28EAA006763CE /* LocationManager.swift in Sources */,
 				6F4146EF25D10DBC006763CE /* AHClientHTTPNetworking.swift in Sources */,
+				6F41471525D28E66006763CE /* Location.swift in Sources */,
 				6F4BFB8D2551A66400CC56AF /* WeatherViewModel.swift in Sources */,
+				6F41473025D2997A006763CE /* LocationService.swift in Sources */,
 				6F41470625D132EA006763CE /* AlertDisplayer.swift in Sources */,
 				6F4BFB502551A5D700CC56AF /* ViewController.swift in Sources */,
 				6F4BFB852551A65000CC56AF /* WeatherResult.swift in Sources */,
