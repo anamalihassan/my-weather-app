@@ -90,7 +90,7 @@ class WeatherViewModel {
     }
     
     // MARK: - Network call
-    private func fetchWeatherInformation(latitude: Double, longitude: Double) {
+    func fetchWeatherInformation(latitude: Double, longitude: Double) {
         if self.isLoading {
             return
         }
