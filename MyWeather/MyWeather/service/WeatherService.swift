@@ -15,8 +15,8 @@ protocol WeatherServiceDelegate: class {
 class WeatherService {
     weak var delegate: WeatherServiceDelegate?
     
-    var client : NHDataProvider!
-    var weather : String!
+    var client : NHDataProvider
+    var weather : String
     init( weather: String, client : NHDataProvider = AHClientHTTPNetworking()) {
         self.weather = weather
         self.client = client
@@ -24,18 +24,20 @@ class WeatherService {
     
     func fetchWeatherInformation(latitude: Double, longitude: Double) {
         let urlString = AppURLs.APIEndpoints.getNowWeather(weather: weather, latitude: latitude, longitude: latitude, key: tokenClosure()).path
-        let url = URL(string: urlString)!
-        print(url)
-        client.fetchRemote(WeatherResult.self, url: url) { result in
-            switch result {
-            case .failure(let error):
-                self.delegate?.onFetchFailed(with: error.reason)
-            case .success(let response):
-                if let response = response as? WeatherResult {
-                    self.delegate?.onWeatherFetchCompleted(with: response)
+        if let url = URL(string: urlString) {
+            print(url)
+            client.fetchRemote(WeatherResult.self, url: url) { result in
+                switch result {
+                case .failure(let error):
+                    self.delegate?.onFetchFailed(with: error.reason)
+                case .success(let response):
+                    if let response = response as? WeatherResult {
+                        self.delegate?.onWeatherFetchCompleted(with: response)
+                    }
                 }
             }
+        }else{
+            self.delegate?.onFetchFailed(with: Constants.APIMessages.InvalidURL)
         }
-        
     }
 }

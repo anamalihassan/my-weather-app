@@ -11,7 +11,7 @@ class DailyWeatherTVC: UITableViewCell {
     
     // MARK: - Properties
     
-    var weath:WeatherDetail? {
+    private var weath:WeatherDetail? {
         didSet {
             guard let contactItem = weath else {return}
             if let timeStamp = contactItem.time {
@@ -32,34 +32,34 @@ class DailyWeatherTVC: UITableViewCell {
         }
     }
     
-    let weatherImageView:UIImageView = {
+    private let weatherImageView:UIImageView = {
         let img = UIImageView()
         img.contentMode = .scaleAspectFill
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.tintColor = appPrimaryColor
+        img.tintColor = Constants.AppColors.primaryColor
         return img
     }()
     
-    let dayLabel:UILabel = {
+    private let dayLabel:UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 20)
-        label.textColor = appPrimaryColor
+        label.textColor = Constants.AppColors.primaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let maxTempLabel:UILabel = {
+    private let maxTempLabel:UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 20)
-        label.textColor =  appPrimaryColor
+        label.textColor =  Constants.AppColors.primaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let minTempLabel:UILabel = {
+    private let minTempLabel:UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 18)
-        label.textColor =  appSecondaryColor
+        label.textColor =  Constants.AppColors.secondaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -76,7 +76,16 @@ class DailyWeatherTVC: UITableViewCell {
         super.init(coder: aDecoder)
     }
     
-    func setUpView(){
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.weatherImageView.image = nil
+    }
+    
+    func setUpData(weathInfo:WeatherDetail?){
+        self.weath = weathInfo
+    }
+    
+    private func setUpView(){
         let tempSV = UIStackView()
         tempSV.translatesAutoresizingMaskIntoConstraints = false
         tempSV.axis = .horizontal

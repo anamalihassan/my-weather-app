@@ -14,9 +14,9 @@ enum DataResponseError: Error {
     var reason: String {
         switch self {
         case .network:
-            return "An error occurred while fetching data"
+            return Constants.APIMessages.NetworkError
         case .decoding:
-            return "An error occurred while decoding data"
+            return Constants.APIMessages.DataDecodingError
         }
     }
 }

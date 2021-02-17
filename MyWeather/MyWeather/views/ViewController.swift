@@ -11,13 +11,13 @@ class ViewController: UIViewController, AlertDisplayer {
     
     // MARK: - Properties
     
-    let viewModel = WeatherViewModel()
+    private let viewModel = WeatherViewModel()
     
-    let weatherInfoView = WeatherView()
+    private let weatherInfoView = WeatherView()
     
-    var activityIndView = UIActivityIndicatorView(style: .large)
+    private var activityIndView = UIActivityIndicatorView(style: .large)
     
-    lazy var dailyWeatherTV:UITableView = {
+    private lazy var dailyWeatherTV:UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
@@ -30,7 +30,7 @@ class ViewController: UIViewController, AlertDisplayer {
         return tableView
     }()
     
-    lazy var hourlyWeatherCV: UICollectionView = {
+    private lazy var hourlyWeatherCV: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
         collectionView.register(HourlyWeatherCVC.self, forCellWithReuseIdentifier: "HourlyWeatherCVC")
         collectionView.allowsSelection = false
@@ -55,14 +55,14 @@ class ViewController: UIViewController, AlertDisplayer {
         self.view.addSubview(activityIndView)
     }
     
-    func separatorView() -> UIView {
+    private func separatorView() -> UIView {
         let separator = UIView()
-        separator.backgroundColor = appPrimaryColor
+        separator.backgroundColor = Constants.AppColors.primaryColor
         separator.translatesAutoresizingMaskIntoConstraints = false
         return separator
     }
     
-    func setUpView(){
+    private func setUpView(){
         self.view.backgroundColor = UIColor(patternImage: UIImage(named:"bg")!)
         let separatorTop = separatorView()
         let separatorBottom = separatorView()
@@ -101,15 +101,15 @@ class ViewController: UIViewController, AlertDisplayer {
             dailyWeatherTV.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor),
         ])
         
-        viewModel.reloadDailyTableView = { [weak self] () in
+        viewModel.reloadDailyTableView = {
             DispatchQueue.main.async {
-                self?.dailyWeatherTV.reloadData()
+                self.dailyWeatherTV.reloadData()
             }
         }
         
-        viewModel.reloadHourlyCollectionView = { [weak self] () in
+        viewModel.reloadHourlyCollectionView = {
             DispatchQueue.main.async {
-                self?.hourlyWeatherCV.reloadData()
+                self.hourlyWeatherCV.reloadData()
             }
         }
     }
@@ -178,7 +178,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DailyWeatherTVC", for: indexPath) as! DailyWeatherTVC
-        cell.weath = viewModel.dailyWeather[indexPath.row]
+        cell.setUpData(weathInfo: viewModel.dailyWeather[indexPath.row])
         cell.backgroundColor = UIColor.clear
         return cell
     }
@@ -200,7 +200,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyWeatherCVC", for: indexPath) as! HourlyWeatherCVC
-        cell.hourlyWeatherDettail = viewModel.hourlyWeather[indexPath.row]
+        cell.setUpData(hourlyWeatherDettail: viewModel.hourlyWeather[indexPath.row])
         return cell
     }
     

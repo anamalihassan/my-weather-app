@@ -14,7 +14,7 @@ public class WeatherView: UIView {
     let locationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 20)
-        label.textColor = appPrimaryColor
+        label.textColor = Constants.AppColors.primaryColor
         label.textAlignment = .center
         label.accessibilityIdentifier = "locationLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +24,7 @@ public class WeatherView: UIView {
         let label = UILabel()
         label.text = "Loading..."
         label.font = UIFont(name: "HelveticaNeue", size: 17)
-        label.textColor = appPrimaryColor
+        label.textColor = Constants.AppColors.primaryColor
         label.textAlignment = .center
         label.accessibilityIdentifier = "summaryLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +33,7 @@ public class WeatherView: UIView {
     let tempLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 25)
-        label.textColor = appPrimaryColor
+        label.textColor = Constants.AppColors.primaryColor
         label.textAlignment = .center
         label.accessibilityIdentifier = "tempLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ public class WeatherView: UIView {
     let apparentTempLabel: UILabel  = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 17)
-        label.textColor = appPrimaryColor
+        label.textColor = Constants.AppColors.primaryColor
         label.textAlignment = .center
         label.accessibilityIdentifier = "apparentTempLabel"
         label.translatesAutoresizingMaskIntoConstraints = false

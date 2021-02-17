@@ -11,7 +11,7 @@ class HourlyWeatherCVC: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var hourlyWeatherDettail:WeatherDetail? {
+    private var hourlyWeatherDettail:WeatherDetail? {
         didSet {
             guard let hourlyWeather = hourlyWeatherDettail else {return}
             if let timeStamp = hourlyWeather.time {
@@ -28,27 +28,27 @@ class HourlyWeatherCVC: UICollectionViewCell {
         }
     }
     
-    let weatherImageView:UIImageView = {
+    private let weatherImageView:UIImageView = {
         let img = UIImageView()
         img.contentMode = .scaleAspectFill
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.tintColor = appPrimaryColor
+        img.tintColor = Constants.AppColors.primaryColor
         return img
     }()
 
     
-    let timeLabel:UILabel = {
+    private let timeLabel:UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 20)
-        label.textColor = appPrimaryColor
+        label.textColor = Constants.AppColors.primaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let tempLabel:UILabel = {
+    private let tempLabel:UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue", size: 20)
-        label.textColor =  appPrimaryColor
+        label.textColor =  Constants.AppColors.primaryColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -64,8 +64,22 @@ class HourlyWeatherCVC: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: Image Re-use
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.weatherImageView.image = nil
+    }
+    
     override func layoutSubviews() {
         
+    }
+    
+    // MARK: - Set Up Data to diaplay
+    
+    func setUpData(hourlyWeatherDettail:WeatherDetail?){
+        self.hourlyWeatherDettail = hourlyWeatherDettail
     }
     
 }
